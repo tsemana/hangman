@@ -4,6 +4,7 @@ require_relative "hangman"
 
 class HangmanTest < Test::Unit::TestCase
 
+	# have to make this into a random word generator
 	def test_hangman_initializes_word_chosen
 		w = "word"
 		h = Hangman.new(w)
@@ -26,10 +27,59 @@ class HangmanTest < Test::Unit::TestCase
 		w = "hello"
 		h = Hangman.new(w)
 		h.guessed_letter("h")
-		assert_equal "h", h.letter[-1]
+		assert_equal "h", h.inputlist[-1]
 	end
 
+	def test_hangman_gameover_win_case_all_letters_are_guessed # - make this into a real world 
+		w = "hello"
+	 	h = Hangman.new(w)
+		h.guessed_letter("h")
+		h.guessed_letter("e")
+		h.guessed_letter("l")
+		h.guessed_letter("o")
+		assert h.board_won?
+	end
+
+	def test_hangman_picks_wrong_letter
+		w = "hello"
+	 	h = Hangman.new(w)
+	 	h.guessed_letter("a")
+	 	assert_equal 7, h.chance
+	end
+
+	def test_hangman_gameover_chance_is_zero
+		w = "hello"
+		h = Hangman.new(w)
+		h.guessed_letter("a")
+		h.guessed_letter("b")
+		h.guessed_letter("c")
+		h.guessed_letter("d")
+		h.guessed_letter("f")
+		h.guessed_letter("g")
+		h.guessed_letter("i")
+		h.guessed_letter("j")
+		assert_equal 0, h.chance
+	end
+
+	def test_hangman_nonalpha_characters_inputted
+		skip "do this later"
+		w = "hello"
+		h = Hangman.new(w)
+		h.guessed_letter(3)
+		assert_equal no change, h.inputlist
+	end
+	 
 end
+	 
+
+	# def test_hangman_all_letters_in_word_are_guessed
+	# 	w = "hello"
+	# 	h = Hangman.new(w)
+
+	# end
+
+	# def test_hangman_player_loses_all_chances
+	# end
 
 
 
