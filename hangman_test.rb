@@ -4,11 +4,10 @@ require_relative "hangman"
 
 class HangmanTest < Test::Unit::TestCase
 
-	# have to make this into a random word generator
 	def test_hangman_initializes_word_chosen
-		w = "word"
+		w = "hello"
 		h = Hangman.new(w)
-		assert_equal "word", h.word
+		assert_equal "hello", h.word
 	end
 
 	def test_hangman_initializes_board
@@ -30,7 +29,12 @@ class HangmanTest < Test::Unit::TestCase
 		assert_equal "h", h.inputlist[-1]
 	end
 
-	def test_hangman_gameover_win_case_all_letters_are_guessed # - make this into a real world 
+	def test_hangman_anything_other_than_single_letter_inputted
+		w = "hello"
+		h = Hangman.new(w)
+	end
+
+	def test_hangman_gameover_win_case_all_letters_are_guessed
 		w = "hello"
 	 	h = Hangman.new(w)
 		h.guessed_letter("h")
@@ -40,14 +44,22 @@ class HangmanTest < Test::Unit::TestCase
 		assert h.board_won?
 	end
 
-	def test_hangman_picks_wrong_letter
+	def test_hangman_chance_counter_goes_down_when_wrong_letter_picked
 		w = "hello"
 	 	h = Hangman.new(w)
 	 	h.guessed_letter("a")
 	 	assert_equal 7, h.chance
 	end
 
-	def test_hangman_gameover_chance_is_zero
+	def test_hangman_chance_counter_doesnt_change_when_right_letter_picked
+		w = "hello"
+		h = Hangman.new(w)
+		h.guessed_letter("h")
+		h.guessed_letter("o")
+		assert_equal 8, h.chance
+	end
+
+	def test_hangman_gameover_chance_counter_goes_down_to_zero
 		w = "hello"
 		h = Hangman.new(w)
 		h.guessed_letter("a")
@@ -61,107 +73,52 @@ class HangmanTest < Test::Unit::TestCase
 		assert_equal 0, h.chance
 	end
 
-	def test_hangman_nonalpha_characters_inputted
-		skip "do this later"
+	def test_hangman_counter_stops_at_zero
 		w = "hello"
 		h = Hangman.new(w)
-		h.guessed_letter(3)
-		assert_equal no change, h.inputlist
+		h.guessed_letter("a")
+		h.guessed_letter("b")
+		h.guessed_letter("c")
+		h.guessed_letter("d")
+		h.guessed_letter("f")
+		h.guessed_letter("g")
+		h.guessed_letter("i")
+		h.guessed_letter("j")
+		h.guessed_letter("x")
+		h.guessed_letter("z")
+		assert_equal 0, h.chance
 	end
-	 
-end
-	 
 
-	# def test_hangman_all_letters_in_word_are_guessed
-	# 	w = "hello"
-	# 	h = Hangman.new(w)
+	def test_hangman_inputlist_doesnt_add_wrong_input_entered_multiple_times
+		w = "hello"
+		h = Hangman.new(w)
+		h.guessed_letter("x")
+		h.guessed_letter("x")
+		assert_equal ["x"], h.inputlist
+	end
 
-	# end
-
-	# def test_hangman_player_loses_all_chances
-	# end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# require "test/unit"
-# require "./hangman.rb"
-
-# # if running ruby 1.9.3 => require_relative "hangman"
-
-# class HangmanTest < Test::Unit::TestCase
-
-# 	def test_initialize_starts_with_eight_chances
-# 	 	h = Hangman.new("blahblah")
-# 	 	assert_equal 8, h.chances
-# 	end
-
-# 	def test_initialize_has_an_empty_board_of_the_right_size
-# 		h = Hangman.new("hello")
-# 		assert_equal "_ _ _ _ _", h.board
-# 	end
-
-# 	def test_initialize_accepts_and_uses_the_word
-# 		word = "hello"
-# 		h = Hangman.new(word) # -> def initialize
-# 		assert_equal word, h.word
-# 	end
-
-# 	def test_initialize_starts_with_no_guesses
+	def test_hangman_counter_doesnt_change_when_wrong_input_entered_multiple_times
 		
-# 	end
+		w = "hello"
+		h = Hangman.new(w)
+		h.guessed_letter("x")
+		h.guessed_letter("x")
+		assert_equal 7, h.chance
+	end
+	
+	def test_hangman_number_inputted
+		skip "Method is called in hang_play; can't test?" # can we test a method in hang_play?
+		w = "hello"
+		h = Hangman.new(w)
+		h.guessed_letter("3")
+		assert_equal [], h.inputlist
+	end
 
-# 	def test_game_ends_when_last_letter_is_guessed_correctly
-# 		word = "hello"
-# 		board = "h e l l _"
-# 		guess = "o"
-# 		h = Hangman.new(word) # created the game
-# 		h.board = board 			# setup the code
-# 		# DONE WITH SETUP - hopefully
-# 		# guess "o" (the final letter)
-# 		h.guess!(guess)
-# 		# game ends 
-# 		assert h.won?
-# 		# player wins
-# 	end
-# end
+	def test_hangman_random_generator_producing_words
+		skip "Method is called in hang_play; can't test?" # can we test a method in hang_play?
+		w = ""
+		h = Hangman.new(w)
+		assert_equal word_list[0..-1], h.word
+	end
+
+end

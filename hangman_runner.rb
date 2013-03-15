@@ -1,6 +1,8 @@
-require_relative "hangman"
 
-Hangman.new("hello")
+require_relative "hang_play"
+
+#choose random word
+HangmanPlay.start
 
 
 

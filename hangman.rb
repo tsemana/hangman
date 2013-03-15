@@ -8,100 +8,45 @@ class Hangman
     @board = word.split("").map{"_ "}.join.strip
     @chance = 8
     @inputlist = []
+    @input = nil
     puts "Hangman!"
   end
 
-  def guessed_letter(input)   # why does it break when i take the @ out
-    @inputlist.push(input)
+  def guessed_letter(input)
+    @input = input
+    if input_in_inputlist?
+      return      
+    end
+    inputlist_push(input)
     if word.include?(input)
-      @board = word.split("").map{|x| @inputlist.include?(x) ? "#{x} " : "_ " }.join.strip #ternary operator used here. (test ? true : false) 
+      board_update
+    else 
       chance_counter
     end
   end
 
-  # def currentboard_changer
-  #     @currentboard # will have to change this into the current status of the board
-  # end
+  def inputlist_push(input) # which input are all these inputs referring to? help us clean up.
+    @inputlist.push(input)
+  end
 
-  def board_won?
-    puts @board
-    word == @board.delete(" ")
+  def input_in_inputlist?
+    @inputlist.include?(@input)
+  end
+
+  def board_update
+      @board = word.split("").map{|x| @inputlist.include?(x) ? "#{x} " : "_ " }.join.strip #ternary operator used here. (test ? true : false) 
   end
 
   def chance_counter
-    @chance -= 1
+    @chance -= 1 unless @chance == 0
   end
 
-  # def guess
-  #   input = 
-  # end
+  def board_won?
+    word == @board.delete(" ")
+  end
+
+  def board_lost?
+    @chance == 0
+  end  
 
 end
-
-
-# - we will have to .downcase all incoming characters
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# class Hangman
-
-#   # This class represents an instance of a hangman game.
-#   # It is only concerned with one run through of the game.
-#   # It is not responsbile for human interaction.
-
-#   attr_accessor :word, :chances, :board
-
-#   def initialize(word)
-#     @word = word
-#   @chances = 8
-  
-#     puts "Hangman game!"
-#   end
-
-#   def board
-#     board = "_ " * @word.length
-#     board.strip
-#   end
-
-#   def guess!(letter)
-#   end
-
-#   def won?
-#     # true or false
-#   end
-  
-# end
-
