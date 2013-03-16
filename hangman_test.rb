@@ -106,19 +106,4 @@ class HangmanTest < Test::Unit::TestCase
 		assert_equal 7, h.chance
 	end
 	
-	def test_hangman_number_inputted
-		skip "Method is called in hang_play; can't test?" # can we test a method in hang_play?
-		w = "hello"
-		h = Hangman.new(w)
-		h.guessed_letter("3")
-		assert_equal [], h.inputlist
-	end
-
-	def test_hangman_random_generator_producing_words
-		skip "Method is called in hang_play; can't test?" # can we test a method in hang_play?
-		w = ""
-		h = Hangman.new(w)
-		assert_equal word_list[0..-1], h.word
-	end
-
 end

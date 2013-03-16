@@ -1,7 +1,6 @@
-
 class Hangman
 
-  attr_accessor :word, :board, :chance, :inputlist
+  attr_accessor :word, :board, :chance, :inputlist, :repeated
 
   def initialize(word)
     @word = word
@@ -9,35 +8,38 @@ class Hangman
     @chance = 8
     @inputlist = []
     @input = nil
-    puts "Hangman!"
+    @repeated = false
   end
 
   def guessed_letter(input)
     @input = input
     if input_in_inputlist?
-      return      
+      @repeated = true
+      return 
+    else
+      @repeated = false
     end
-    inputlist_push(input)
+    inputlist_push!
     if word.include?(input)
-      board_update
+      board_update!
     else 
-      chance_counter
+      lose_a_chance!
     end
   end
 
-  def inputlist_push(input) # which input are all these inputs referring to? help us clean up.
-    @inputlist.push(input)
+  def inputlist_push!
+    @inputlist.push(@input)
   end
 
   def input_in_inputlist?
     @inputlist.include?(@input)
   end
 
-  def board_update
-      @board = word.split("").map{|x| @inputlist.include?(x) ? "#{x} " : "_ " }.join.strip #ternary operator used here. (test ? true : false) 
+  def board_update!
+    @board = word.split("").map{|x| @inputlist.include?(x) ? "#{x} " : "_ " }.join.strip #ternary operator used here. (test ? true : false) 
   end
 
-  def chance_counter
+  def lose_a_chance!
     @chance -= 1 unless @chance == 0
   end
 
