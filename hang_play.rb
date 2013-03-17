@@ -28,7 +28,7 @@ class HangmanPlay
 
   def self.interface_setup
     loop do
-      puts "*************************"
+      system "clear"
       puts "HANGMAN!"
       puts ""
       puts ""
